@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/png" href="/Screenshot 2025-06-19 111546.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>EthicBizz | Learn. Build. Lead with Ethics & Innovation</title>
+    
+    <meta name="description" content="EthicBizz empowers students in Grades 9–12 to build real-world skills, innovate responsibly, and become ethical leaders through tech, entrepreneurship, and impact-driven learning." />
+
+    <!-- Primary Meta Tags -->
+    <meta name="author" content="EthicBizz Team" />
+    <meta name="keywords" content="EthicBizz, Ethical Innovation, Youth Leadership, Teen Startups, Student Programs, Social Impact, AI Ethics, Coding for Students, Entrepreneurship for Teens, SSP, YDP, Bridge Program, Ethical Learning, High School Innovation" />
+    <meta name="theme-color" content="#4f46e5" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="EthicBizz | Building Ethical Leaders for Tomorrow" />
+    <meta property="og:description" content="Join India's most impactful ethical innovation platform for students. Learn real skills. Launch real projects. Build a better future." />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:url" content="https://ethicbizz.in/" />
+    <meta property="og:site_name" content="EthicBizz" />
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EthicBizz | Learn. Build. Lead with Ethics & Innovation" />
+    <meta name="twitter:description" content="Empowering high school students to build startups, code ethically, and drive meaningful change in their communities." />
+    <meta name="twitter:image" content="/og-image.jpg" />
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.web3forms.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://api.web3forms.com https://wa.me; frame-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+    <!-- Performance & PWA-friendly -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    
+    <!-- Enhanced Mobile Optimization -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Security & Performance Scripts -->
+    <script>
+      // Disable right-click context menu for security
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+      
+      // Disable F12, Ctrl+Shift+I, Ctrl+U
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'F12' || 
+            (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+            (e.ctrlKey && e.key === 'u')) {
+          e.preventDefault();
+        }
+      });
+      
+      // Performance monitoring
+      window.addEventListener('load', function() {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js').catch(function() {
+            // Service worker registration failed
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
