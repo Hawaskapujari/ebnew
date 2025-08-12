@@ -10,6 +10,7 @@ import {
   Linkedin,
   Twitter,
   Instagram,
+  Facebook,
   Youtube,
   ArrowRight,
   BookOpen,
@@ -80,7 +81,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               href: '/programs/ssp',
               description: 'Grades 11-12 specialization',
               icon: <BookOpen className="h-4 w-4" />
-            },
+            }
+          ],
+        },
+        {
+          category: 'Core Components',
+          items: [
             {
               name: 'Ethical Professional Core',
               href: '/programs/epc',
@@ -477,16 +483,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
             </div>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://www.facebook.com/share/1CtPqqyvem/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="https://twitter.com/ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://www.instagram.com/ethicbizz?igsh=MWhsaXk0bWI4ZHQzMQ==" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://www.linkedin.com/company/ethicbizz/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://youtube.com/@ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
