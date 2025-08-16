@@ -1,31 +1,31 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import LiveChat from './components/LiveChat';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import LiveChat from "./components/LiveChat";
 
-import Home from './pages/Home';
-import About from './pages/About';
-import Programs from './pages/programs';
-import ProgramYDP from './pages/programs/YDP';
-import ProgramSSP from './pages/programs/SSP';
-import ProgramEPC from './pages/programs/EPC';
-import ProgramERWA from './pages/programs/ERWA';
-import ProgramECP from './pages/programs/ECP';
-import Schools from './pages/Schools';
-import Mentors from './pages/Mentors';
-import MentorSpotlight from './pages/MentorSpotlight';
-import Success from './pages/Success';
-import SuccessDetail from './pages/SuccessDetail'; // ✅ Make sure filename matches exactly
-import Portfolio from './pages/Portfolio';
-import Blog from './pages/Blog';
-import BlogDetail from './pages/BlogDetail';
-import Join from './pages/Join';
-import Contact from './pages/Contact';
-import ThankYou from './pages/ThankYou';
-import Verify from './pages/Verify';
-import Legal from './pages/Legal';
-import FormSuccess from './pages/FormSuccess';
-import NotFound from './pages/NotFound';
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Programs from "./pages/programs";
+import ProgramYDP from "./pages/programs/YDP";
+import ProgramSSP from "./pages/programs/SSP";
+import ProgramEPC from "./pages/programs/EPC";
+import ProgramERWA from "./pages/programs/ERWA";
+import ProgramECP from "./pages/programs/ECP";
+import Schools from "./pages/Schools";
+import Mentors from "./pages/Mentors";
+import MentorSpotlight from "./pages/MentorSpotlight";
+import Success from "./pages/Success";
+import SuccessDetail from "./pages/SuccessDetail"; // ✅ make sure this file exists
+import Portfolio from "./pages/Portfolio";
+import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
+import Join from "./pages/Join";
+import Contact from "./pages/Contact";
+import ThankYou from "./pages/ThankYou";
+import Verify from "./pages/Verify";
+import Legal from "./pages/Legal";
+import FormSuccess from "./pages/FormSuccess";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
