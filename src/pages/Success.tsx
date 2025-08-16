@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Award, Users, TrendingUp, ArrowRight, Rocket, Star, Lightbulb } from 'lucide-react';
+import { Award, Users, TrendingUp, ArrowRight, Rocket, Star, Lightbulb, Target, Brain, Heart } from 'lucide-react';
 
 const Success: React.FC = () => {
   return (
@@ -16,15 +16,15 @@ const Success: React.FC = () => {
               </div>
               <h1 className="text-5xl font-bold text-gray-900 mb-6">Success Stories</h1>
               <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
-                We're just getting started, but the future is bright. These spaces will soon be filled 
-                with incredible stories of students who dared to dream and build solutions that matter.
+                We're building something extraordinary. The first success stories will be written by students 
+                who dare to dream and take action. Your story could be the first one featured here.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Coming Soon Stats - Updated without numbers */}
+      {/* Future Impact Stats */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10">
@@ -33,7 +33,7 @@ const Success: React.FC = () => {
               <Star className="h-5 w-5 mr-2" />
               The Journey Begins
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">The Journey Begins Now</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Building Tomorrow's Success</h2>
             <p className="text-xl text-gray-600">
               Every great story starts with a single step. Here's what we're building together.
             </p>
@@ -44,8 +44,8 @@ const Success: React.FC = () => {
               <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-modern">
                 <Rocket className="h-10 w-10 text-blue-600" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">First Story</div>
-              <div className="text-gray-600">Future Student Startups</div>
+              <div className="text-3xl font-bold text-gray-900 mb-2">Your Story</div>
+              <div className="text-gray-600">Waiting to be Written</div>
               <p className="text-sm text-gray-500 mt-2">The first success story could be yours</p>
             </div>
 
@@ -54,96 +54,23 @@ const Success: React.FC = () => {
                 <Users className="h-10 w-10 text-green-600" />
               </div>
               <div className="text-3xl font-bold text-gray-900 mb-2">Unlimited</div>
-              <div className="text-gray-600">Lives to Impact</div>
-              <p className="text-sm text-gray-500 mt-2">The potential is boundless</p>
+              <div className="text-gray-600">Potential to Impact</div>
+              <p className="text-sm text-gray-500 mt-2">The possibilities are endless</p>
             </div>
 
             <div className="text-center glass-card rounded-3xl p-8 shadow-modern-xl card-hover">
               <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-modern">
                 <Award className="h-10 w-10 text-purple-600" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">Coming Soon</div>
-              <div className="text-gray-600">Awards & Recognition</div>
-              <p className="text-sm text-gray-500 mt-2">Excellence will be celebrated</p>
+              <div className="text-3xl font-bold text-gray-900 mb-2">Excellence</div>
+              <div className="text-gray-600">Will be Celebrated</div>
+              <p className="text-sm text-gray-500 mt-2">Recognition awaits achievers</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Future Success Stories Placeholder with Glass Effects */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center bg-blue-100/80 backdrop-blur-sm text-blue-600 px-6 py-3 rounded-full text-sm font-semibold mb-6 border border-blue-200/50 shadow-modern">
-              <Lightbulb className="h-5 w-5 mr-2" />
-              Future Stories
-            </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Future Success Stories</h2>
-            <p className="text-xl text-gray-600">
-              This is where your achievements will shine. The stage is set, the spotlight is ready.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((index) => (
-              <div key={index} className="glass-card rounded-3xl shadow-modern-xl card-hover overflow-hidden border border-gray-100">
-                <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                  <div className="text-center">
-                    <Lightbulb className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500 font-medium">Your Project Here</p>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
-                      Coming Soon
-                    </span>
-                    <div className="flex gap-1">
-                      <Star className="h-4 w-4 text-gray-300" />
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Your Innovation Awaits</h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    This space is reserved for the next breakthrough solution created by an EthicBizz student.
-                  </p>
-                  
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-600 mb-1">
-                      <strong>Created by:</strong> Future Innovator
-                    </p>
-                    <p className="text-sm text-gray-600 mb-1">
-                      <strong>School:</strong> Your School Here
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      <strong>Grade:</strong> 9-12
-                    </p>
-                  </div>
-                  
-                  <div className="bg-green-50 rounded-lg p-3 mb-4">
-                    <p className="text-sm font-medium text-green-800 mb-1">Future Impact:</p>
-                    <p className="text-sm text-green-700">Ready to change the world</p>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Innovation</span>
-                    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Ethics</span>
-                    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Impact</span>
-                  </div>
-                  
-                  <div className="text-center">
-                    <p className="text-blue-600 font-semibold text-sm">Story Coming Soon</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action for First Stories with Glass Effects */}
+      {/* Call to Action for First Stories */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10">
@@ -152,7 +79,7 @@ const Success: React.FC = () => {
               <Award className="h-5 w-5 mr-2" />
               Be the First
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Be the First</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Write the First Chapter</h2>
             <p className="text-xl text-gray-600">
               The first success stories are the most memorable. Will yours be among them?
             </p>
@@ -180,10 +107,10 @@ const Success: React.FC = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-3">Build & Create</h3>
               <p className="text-gray-600 mb-6">Work on real projects that solve meaningful problems in your community.</p>
               <Link
-                to="/events"
+                to="/contact"
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl font-semibold inline-flex items-center transition-all hover:scale-105 shadow-modern btn-hover-effect"
               >
-                Join Events <ArrowRight className="ml-2 h-4 w-4" />
+                Get Started <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
 
@@ -197,14 +124,14 @@ const Success: React.FC = () => {
                 to="/contact"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-2xl font-semibold inline-flex items-center transition-all hover:scale-105 shadow-modern btn-hover-effect"
               >
-                Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                Contact Us <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Inspirational Quote with Glass Effects */}
+      {/* Inspirational Quote */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">

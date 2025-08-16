@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Github, Figma, Code, Filter, Search, Award, Users, Calendar, Lightbulb, Star, Target } from 'lucide-react';
+import { Code, Filter, Search, Award, Users, Calendar, Lightbulb, Star, Target, ArrowRight } from 'lucide-react';
 
 const Portfolio: React.FC = () => {
   const [selectedDomain, setSelectedDomain] = useState('all');
@@ -8,20 +8,7 @@ const Portfolio: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const domains = ['all', 'AI/ML', 'Web Development', 'Cybersecurity', 'IoT/Hardware', 'Business/FinTech', 'EdTech'];
-  const years = ['all', '2024', '2023', '2022'];
-
-  // Empty projects array - ready for real student projects
-  const projects: any[] = [];
-
-  const filteredProjects = projects.filter(project => {
-    const matchesDomain = selectedDomain === 'all' || project.domain === selectedDomain;
-    const matchesYear = selectedYear === 'all' || project.year === selectedYear;
-    const matchesSearch = project.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.student?.name?.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    return matchesDomain && matchesYear && matchesSearch;
-  });
+  const years = ['all', '2024', '2025'];
 
   return (
     <div className="min-h-screen bg-white">
@@ -34,8 +21,8 @@ const Portfolio: React.FC = () => {
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">Student Portfolio Showcase</h1>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              This is where amazing student projects will be showcased. From AI solutions to social impact platforms, 
-              the next generation of innovators will display their work here.
+              This showcase will feature incredible projects built by EthicBizz students. From AI solutions 
+              to social impact platforms, the next generation of innovators will display their work here.
             </p>
           </div>
         </div>
@@ -104,12 +91,12 @@ const Portfolio: React.FC = () => {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((index) => (
+            {[1, 2, 3, 4].map((index) => (
               <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border border-gray-100">
                 <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
                   <div className="text-center">
                     <Lightbulb className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500 font-medium">Your Project Here</p>
+                    <p className="text-gray-500 font-medium">Your Innovation Here</p>
                   </div>
                 </div>
                 
@@ -123,7 +110,7 @@ const Portfolio: React.FC = () => {
                     </div>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Your Innovation Awaits</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Your Project Awaits</h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">
                     This space is reserved for the next breakthrough solution created by an EthicBizz student.
                   </p>
@@ -183,13 +170,13 @@ const Portfolio: React.FC = () => {
               to="/programs"
               className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold inline-flex items-center transition-colors"
             >
-              Explore Programs <ExternalLink className="ml-2 h-5 w-5" />
+              Explore Programs <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               to="/contact"
               className="bg-transparent border-2 border-white hover:bg-white hover:text-purple-600 px-8 py-4 rounded-lg font-semibold inline-flex items-center transition-colors"
             >
-              Get Started <ExternalLink className="ml-2 h-5 w-5" />
+              Get Started <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </div>
         </div>
