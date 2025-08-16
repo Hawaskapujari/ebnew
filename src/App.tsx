@@ -15,7 +15,7 @@ import Schools from './pages/Schools';
 import Mentors from './pages/Mentors';
 import MentorSpotlight from './pages/MentorSpotlight';
 import Success from './pages/Success';
-import SuccessDetail from './pages/SuccessDetail';
+import SuccessDetail from './pages/SuccessDetail'; // ✅ Make sure filename matches exactly
 import Portfolio from './pages/Portfolio';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
@@ -54,8 +54,6 @@ function App() {
           <Route path="/form-success" element={<FormSuccess />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/legal" element={<Legal />} />
-
-          {/* Catch-all fallback */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
