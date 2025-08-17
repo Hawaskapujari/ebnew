@@ -42,7 +42,7 @@ const YDP: React.FC = () => {
       });
 
       if (response.ok) {
-        window.location.href = '/thank-you?type=student';
+        window.location.href = '/form-success?type=ydp';
       } else {
         throw new Error('Submission failed');
       }

@@ -43,7 +43,7 @@ const SSP: React.FC = () => {
       });
 
       if (response.ok) {
-        window.location.href = '/thank-you?type=student';
+        window.location.href = '/form-success?type=ssp';
       } else {
         throw new Error('Submission failed');
       }

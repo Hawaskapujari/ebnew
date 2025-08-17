@@ -42,7 +42,7 @@ const ERWA: React.FC = () => {
       });
 
       if (response.ok) {
-        window.location.href = '/thank-you?type=student';
+        window.location.href = '/form-success?type=erwa';
       } else {
         throw new Error('Submission failed');
       }

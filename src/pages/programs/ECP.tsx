@@ -43,7 +43,7 @@ const ECP: React.FC = () => {
       });
 
       if (response.ok) {
-        window.location.href = '/thank-you?type=student';
+        window.location.href = '/form-success?type=ecp';
       } else {
         throw new Error('Submission failed');
       }

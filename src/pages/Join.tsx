@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Briefcase, Heart, Building, ArrowRight, Upload, CheckCircle } from 'lucide-react';
+import { Users, Briefcase, Heart, Building, ArrowRight, Upload, CheckCircle, Send } from 'lucide-react';
 
 const Join: React.FC = () => {
   const [activeTab, setActiveTab] = useState('mentor');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     // Mentor form
     mentorName: '',
@@ -41,13 +42,45 @@ const Join: React.FC = () => {
     jobPosition: '',
     jobExperience: '',
     jobSkills: '',
-    jobMotivation: '',
-    jobResume: null
+    jobMotivation: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form will be submitted to Web3Forms
+    setIsSubmitting(true);
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('access_key', '03eff22b-fb87-4824-bbe6-1f3e42eadb02');
+      formDataToSend.append('_redirect', `${window.location.origin}/form-success?type=${activeTab}`);
+      formDataToSend.append('subject', `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Application - EthicBizz`);
+      formDataToSend.append('from_name', 'EthicBizz Website');
+      
+      // Add form type
+      formDataToSend.append('form_type', activeTab);
+      
+      // Add relevant form data based on active tab
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key.startsWith(activeTab) && value) {
+          formDataToSend.append(key, value);
+        }
+      });
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      if (response.ok) {
+        window.location.href = `/form-success?type=${activeTab}`;
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      alert('There was an error submitting your application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -55,15 +88,6 @@ const Join: React.FC = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({
-        ...formData,
-        jobResume: e.target.files[0]
-      });
-    }
   };
 
   const tabs = [
@@ -181,10 +205,6 @@ const Join: React.FC = () => {
             {/* Mentor Form */}
             {activeTab === 'mentor' && (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <input type="hidden" name="access_key" value="03eff22b-fb87-4824-bbe6-1f3e42eadb02" />
-                <input type="hidden" name="_redirect" value={`${window.location.origin}/form-success?type=mentor`} />
-                <input type="hidden" name="subject" value="Mentor Application - Join EthicBizz" />
-                
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="mentorName" className="block text-sm font-medium text-gray-700 mb-2">
@@ -349,9 +369,22 @@ const Join: React.FC = () => {
 
                 <button
                   type="submit"
-                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors ${getButtonColor(currentTab.color)}`}
+                  disabled={isSubmitting}
+                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                    isSubmitting ? 'bg-gray-400 cursor-not-allowed' : getButtonColor(currentTab.color)
+                  }`}
                 >
-                  Submit Mentor Application
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-5 w-5" />
+                      Submit Mentor Application
+                    </>
+                  )}
                 </button>
               </form>
             )}
@@ -359,10 +392,6 @@ const Join: React.FC = () => {
             {/* Partner Form */}
             {activeTab === 'partner' && (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <input type="hidden" name="access_key" value="03eff22b-fb87-4824-bbe6-1f3e42eadb02" />
-                <input type="hidden" name="_redirect" value={`${window.location.origin}/form-success?type=partner`} />
-                <input type="hidden" name="subject" value="Partnership Inquiry - Collaborate with EthicBizz" />
-                
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="partnerOrganization" className="block text-sm font-medium text-gray-700 mb-2">
@@ -487,9 +516,22 @@ const Join: React.FC = () => {
 
                 <button
                   type="submit"
-                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors ${getButtonColor(currentTab.color)}`}
+                  disabled={isSubmitting}
+                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                    isSubmitting ? 'bg-gray-400 cursor-not-allowed' : getButtonColor(currentTab.color)
+                  }`}
                 >
-                  Submit Partnership Proposal
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-5 w-5" />
+                      Submit Partnership Proposal
+                    </>
+                  )}
                 </button>
               </form>
             )}
@@ -497,10 +539,6 @@ const Join: React.FC = () => {
             {/* Volunteer Form */}
             {activeTab === 'volunteer' && (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <input type="hidden" name="access_key" value="03eff22b-fb87-4824-bbe6-1f3e42eadb02" />
-                <input type="hidden" name="_redirect" value={`${window.location.origin}/form-success?type=volunteer`} />
-                <input type="hidden" name="subject" value="Volunteer Application - Join Our Mission" />
-                
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="volunteerName" className="block text-sm font-medium text-gray-700 mb-2">
@@ -633,9 +671,22 @@ const Join: React.FC = () => {
 
                 <button
                   type="submit"
-                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors ${getButtonColor(currentTab.color)}`}
+                  disabled={isSubmitting}
+                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                    isSubmitting ? 'bg-gray-400 cursor-not-allowed' : getButtonColor(currentTab.color)
+                  }`}
                 >
-                  Submit Volunteer Application
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-5 w-5" />
+                      Submit Volunteer Application
+                    </>
+                  )}
                 </button>
               </form>
             )}
@@ -643,10 +694,6 @@ const Join: React.FC = () => {
             {/* Job Form */}
             {activeTab === 'job' && (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <input type="hidden" name="access_key" value="03eff22b-fb87-4824-bbe6-1f3e42eadb02" />
-                <input type="hidden" name="_redirect" value={`${window.location.origin}/form-success?type=job`} />
-                <input type="hidden" name="subject" value="Job Application - Work with EthicBizz" />
-                
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="jobName" className="block text-sm font-medium text-gray-700 mb-2">
@@ -766,42 +813,24 @@ const Join: React.FC = () => {
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="jobResume" className="block text-sm font-medium text-gray-700 mb-2">
-                    Resume/CV *
-                  </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                    <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <input
-                      type="file"
-                      id="jobResume"
-                      name="jobResume"
-                      required
-                      accept=".pdf,.doc,.docx"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <label
-                      htmlFor="jobResume"
-                      className="cursor-pointer text-blue-600 hover:text-blue-700 font-medium"
-                    >
-                      Click to upload your resume
-                    </label>
-                    <p className="text-gray-500 text-sm mt-2">PDF, DOC, or DOCX (max 5MB)</p>
-                    {formData.jobResume && (
-                      <div className="mt-4 flex items-center justify-center text-green-600">
-                        <CheckCircle className="h-5 w-5 mr-2" />
-                        <span className="text-sm">{formData.jobResume.name}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
                 <button
                   type="submit"
-                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors ${getButtonColor(currentTab.color)}`}
+                  disabled={isSubmitting}
+                  className={`w-full text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                    isSubmitting ? 'bg-gray-400 cursor-not-allowed' : getButtonColor(currentTab.color)
+                  }`}
                 >
-                  Submit Job Application
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-5 w-5" />
+                      Submit Job Application
+                    </>
+                  )}
                 </button>
               </form>
             )}

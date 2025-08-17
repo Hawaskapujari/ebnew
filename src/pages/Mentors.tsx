@@ -17,14 +17,38 @@ const Mentors: React.FC = () => {
     linkedin: ''
   });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => {
-      window.location.href = '/thank-you?type=mentor';
-    }, 2000);
+    setIsSubmitting(true);
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('access_key', '03eff22b-fb87-4824-bbe6-1f3e42eadb02');
+      formDataToSend.append('_redirect', `${window.location.origin}/form-success?type=mentor`);
+      formDataToSend.append('subject', 'Mentor Application - Become a Mentor');
+      formDataToSend.append('from_name', 'EthicBizz Website');
+      
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      if (response.ok) {
+        window.location.href = '/form-success?type=mentor';
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      alert('There was an error submitting your application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -107,21 +131,6 @@ const Mentors: React.FC = () => {
     };
     return colors[color as keyof typeof colors] || colors.blue;
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-            <CheckCircle className="h-12 w-12 text-green-600" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Application Submitted!</h2>
-          <p className="text-xl text-gray-600 mb-6">Thank you for your interest in mentoring. Redirecting...</p>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -217,44 +226,6 @@ const Mentors: React.FC = () => {
         </div>
       </section>
 
-      {/* Join Us CTA */}
-      <section className="py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Join Us as a Mentor</h2>
-            <p className="text-xl text-gray-600">
-              Be among the first mentors to shape the future of ethical business education
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-blue-600">1</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Apply Today</h3>
-              <p className="text-gray-600 mb-6">Submit your application and tell us about your expertise and passion for mentoring.</p>
-            </div>
-
-            <div className="text-center p-8 bg-gradient-to-br from-green-50 to-teal-50 rounded-2xl">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-green-600">2</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Get Matched</h3>
-              <p className="text-gray-600 mb-6">We'll match you with students whose interests align with your expertise and availability.</p>
-            </div>
-
-            <div className="text-center p-8 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-purple-600">3</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Make Impact</h3>
-              <p className="text-gray-600 mb-6">Start mentoring and watch as you help shape the next generation of ethical leaders.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Application Form */}
       <section id="apply" className="py-20 bg-gradient-to-br from-green-50 to-blue-50">
         <div className="max-w-4xl mx-auto px-4">
@@ -267,10 +238,6 @@ const Mentors: React.FC = () => {
           
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <input type="hidden" name="access_key" value="03eff22b-fb87-4824-bbe6-1f3e42eadb02" />
-              <input type="hidden" name="_redirect" value={`${window.location.origin}/form-success?type=mentor`} />
-              <input type="hidden" name="subject" value="Mentor Application - Become a Mentor" />
-              
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -474,10 +441,24 @@ const Mentors: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center"
+                disabled={isSubmitting}
+                className={`w-full px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                  isSubmitting 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-green-600 hover:bg-green-700'
+                } text-white`}
               >
-                <Send className="mr-2 h-5 w-5" />
-                Submit Mentor Application
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="mr-2 h-5 w-5" />
+                    Submit Mentor Application
+                  </>
+                )}
               </button>
             </form>
           </div>

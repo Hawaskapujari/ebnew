@@ -30,6 +30,7 @@ const Contact: React.FC = () => {
       formDataToSend.append('access_key', '03eff22b-fb87-4824-bbe6-1f3e42eadb02');
       formDataToSend.append('subject', `Contact Form: ${formData.subject}`);
       formDataToSend.append('from_name', 'EthicBizz Website');
+      formDataToSend.append('_redirect', `${window.location.origin}/form-success?type=contact`);
       
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
@@ -42,6 +43,9 @@ const Contact: React.FC = () => {
 
       if (response.ok) {
         setIsSubmitted(true);
+        setTimeout(() => {
+          window.location.href = '/form-success?type=contact';
+        }, 1000);
       } else {
         throw new Error('Submission failed');
       }
@@ -56,7 +60,7 @@ const Contact: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="max-w-2xl w-full">
-          <div className="professional-card-lg shadow-professional-xl text-center bg-white">
+          <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="h-12 w-12 text-green-600" />
             </div>
@@ -76,10 +80,10 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/" className="btn-primary">
+              <a href="/" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
                 Back to Home
               </a>
-              <a href="/programs" className="btn-secondary">
+              <a href="/programs" className="bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-lg font-semibold transition-colors">
                 Explore Programs
               </a>
             </div>
@@ -92,8 +96,8 @@ const Contact: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-blue-50 to-gray-100">
-        <div className="container-professional text-center">
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-gray-100">
+        <div className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Contact EthicBizz
           </h1>
@@ -104,17 +108,17 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Contact Form and Info */}
-      <section className="section-padding">
-        <div className="container-professional">
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Form */}
-            <div className="professional-card-lg shadow-professional-xl">
+            <div className="bg-white rounded-2xl p-8 shadow-lg">
               <h2 className="text-3xl font-bold text-gray-900 mb-8">Send us a Message</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="form-group">
-                    <label htmlFor="name" className="form-label">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                       Full Name *
                     </label>
                     <input
@@ -124,13 +128,13 @@ const Contact: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="form-input"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Your full name"
                     />
                   </div>
                   
-                  <div className="form-group">
-                    <label htmlFor="email" className="form-label">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                       Email Address *
                     </label>
                     <input
@@ -140,15 +144,15 @@ const Contact: React.FC = () => {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="form-input"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="your.email@example.com"
                     />
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="form-group">
-                    <label htmlFor="phone" className="form-label">
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                       Phone Number
                     </label>
                     <input
@@ -157,13 +161,13 @@ const Contact: React.FC = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="form-input"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="+91 98765 43210"
                     />
                   </div>
                   
-                  <div className="form-group">
-                    <label htmlFor="type" className="form-label">
+                  <div>
+                    <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-2">
                       Inquiry Type
                     </label>
                     <select
@@ -171,7 +175,7 @@ const Contact: React.FC = () => {
                       name="type"
                       value={formData.type}
                       onChange={handleChange}
-                      className="form-input"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="general">General Inquiry</option>
                       <option value="student">Student Application</option>
@@ -182,8 +186,8 @@ const Contact: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="subject" className="form-label">
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                     Subject *
                   </label>
                   <input
@@ -193,13 +197,13 @@ const Contact: React.FC = () => {
                     required
                     value={formData.subject}
                     onChange={handleChange}
-                    className="form-input"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Brief subject line"
                   />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="message" className="form-label">
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                     Message *
                   </label>
                   <textarea
@@ -209,7 +213,7 @@ const Contact: React.FC = () => {
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
-                    className="form-input"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Tell us more about your inquiry..."
                   />
                 </div>
@@ -217,10 +221,23 @@ const Contact: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`btn-primary w-full ${isSubmitting ? 'btn-loading' : ''}`}
+                  className={`w-full px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                    isSubmitting 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  } text-white`}
                 >
-                  {!isSubmitting && <Send className="mr-2 h-5 w-5" />}
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-5 w-5" />
+                      Send Message
+                    </>
+                  )}
                 </button>
               </form>
 
@@ -239,10 +256,10 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="space-y-6">
-                <div className="professional-card">
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <div className="flex items-center">
-                    <div className="icon-container icon-primary mr-4">
-                      <Mail className="h-6 w-6" />
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                      <Mail className="h-6 w-6 text-blue-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Email</h3>
@@ -252,10 +269,10 @@ const Contact: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="professional-card">
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <div className="flex items-center">
-                    <div className="icon-container icon-secondary mr-4">
-                      <Phone className="h-6 w-6" />
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                      <Phone className="h-6 w-6 text-green-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Phone</h3>
@@ -265,10 +282,10 @@ const Contact: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="professional-card">
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <div className="flex items-center">
-                    <div className="icon-container icon-success mr-4">
-                      <MapPin className="h-6 w-6" />
+                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                      <MapPin className="h-6 w-6 text-purple-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Office</h3>
@@ -278,10 +295,10 @@ const Contact: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="professional-card">
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
                   <div className="flex items-center">
-                    <div className="icon-container icon-primary mr-4">
-                      <Clock className="h-6 w-6" />
+                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                      <Clock className="h-6 w-6 text-orange-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Business Hours</h3>
@@ -292,7 +309,7 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              <div className="professional-card bg-blue-50 border-blue-200">
+              <div className="bg-blue-50 rounded-2xl p-6 border border-blue-200">
                 <h3 className="font-semibold text-gray-900 mb-3">Quick Response Guarantee</h3>
                 <p className="text-gray-600 text-sm">
                   We understand that educational decisions are time-sensitive. Our team is committed to 

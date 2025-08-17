@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { School, Users, Award, BookOpen, ArrowRight, CheckCircle, Calendar, Play, Star } from 'lucide-react';
+import { School, Users, Award, BookOpen, ArrowRight, CheckCircle, Calendar, Play, Star, Send } from 'lucide-react';
 
 const Schools: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,9 +16,38 @@ const Schools: React.FC = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form will be submitted to Web3Forms
+    setIsSubmitting(true);
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('access_key', '03eff22b-fb87-4824-bbe6-1f3e42eadb02');
+      formDataToSend.append('_redirect', `${window.location.origin}/form-success?type=school`);
+      formDataToSend.append('subject', 'School Partnership Inquiry - Transform Education');
+      formDataToSend.append('from_name', 'EthicBizz Website');
+      
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      if (response.ok) {
+        window.location.href = '/form-success?type=school';
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      alert('There was an error submitting your application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -55,7 +84,7 @@ const Schools: React.FC = () => {
     {
       name: 'Co-Teaching Model',
       description: 'EthicBizz instructors work alongside your teachers',
-      duration: '2-3 hours per week',
+      commitment: '2-3 hours/week',
       bestFor: 'Schools wanting deep integration',
       features: [
         'Joint lesson planning',
@@ -67,7 +96,7 @@ const Schools: React.FC = () => {
     {
       name: 'After-School Program',
       description: 'Dedicated EthicBizz sessions after regular school hours',
-      duration: '3-4 hours per week',
+      commitment: '3-4 hours/week',
       bestFor: 'Schools with flexible scheduling',
       features: [
         'Focused learning environment',
@@ -79,7 +108,7 @@ const Schools: React.FC = () => {
     {
       name: 'Weekend Intensive',
       description: 'Concentrated sessions on weekends',
-      duration: '6 hours per weekend',
+      commitment: '6 hours/weekend',
       bestFor: 'Schools with space constraints',
       features: [
         'Immersive learning experience',
@@ -87,36 +116,6 @@ const Schools: React.FC = () => {
         'Community building',
         'Family involvement opportunities'
       ]
-    }
-  ];
-
-  const partnerSchools = [
-    {
-      name: 'Delhi Public School, Bangalore',
-      location: 'Bangalore, Karnataka',
-      students: '1200+',
-      programs: 'YDP, SSP, ECP',
-      testimonial: 'EthicBizz has transformed how our students think about technology and ethics.',
-      principal: 'Dr. Meera Sharma',
-      image: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-    {
-      name: 'Kendriya Vidyalaya, Delhi',
-      location: 'New Delhi',
-      students: '800+',
-      programs: 'YDP, ERWA',
-      testimonial: 'Our students are now creating real solutions to community problems.',
-      principal: 'Mr. Rajesh Kumar',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-    {
-      name: 'DAV Public School, Mumbai',
-      location: 'Mumbai, Maharashtra',
-      students: '950+',
-      programs: 'SSP, EPC, ECP',
-      testimonial: 'The ethical framework has become central to all our teaching.',
-      principal: 'Ms. Priya Patel',
-      image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400'
     }
   ];
 
@@ -175,10 +174,10 @@ const Schools: React.FC = () => {
                 Book a Demo <ArrowRight className="ml-2 h-5 w-5" />
               </a>
               <a
-                href="#testimonials"
+                href="#benefits"
                 className="bg-white hover:bg-gray-50 text-gray-700 px-8 py-4 rounded-lg font-semibold border border-gray-300 inline-flex items-center transition-colors"
               >
-                <Play className="mr-2 h-5 w-5" /> See Success Stories
+                Learn More <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </div>
           </div>
@@ -186,7 +185,7 @@ const Schools: React.FC = () => {
       </section>
 
       {/* Benefits */}
-      <section className="py-20">
+      <section id="benefits" className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Schools Choose EthicBizz</h2>
@@ -209,112 +208,58 @@ const Schools: React.FC = () => {
         </div>
       </section>
       
-{/* Implementation Models */}
-<section className="py-20 bg-gray-50">
-  <div className="max-w-7xl mx-auto px-4">
-    <div className="text-center mb-16">
-      <h2 className="text-4xl font-bold text-gray-900 mb-4">
-        Flexible Implementation Models
-      </h2>
-      <p className="text-xl text-gray-600">
-        We're building partnerships with visionary schools that believe in transformative education.
-      </p>
-    </div>
-
-    <div className="grid md:grid-cols-3 gap-8">
-      {implementationModels.map((model, index) => (
-        <div
-          key={index}
-          className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
-        >
-          <h3 className="text-xl font-bold text-gray-900 mb-2">
-            {model.name}
-          </h3>
-          <p className="text-gray-600 mb-4 leading-relaxed">
-            {model.description}
-          </p>
-
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="text-center p-3 bg-blue-50 rounded-lg">
-              <div className="font-semibold text-blue-600">{model.duration}</div>
-              <span className="font-semibold text-gray-400">Duration</span>
-            </div>
-            <div className="text-center p-3 bg-green-50 rounded-lg">
-              <div className="font-semibold text-green-600 text-sm">{model.bestFor}</div>
-              <span className="font-semibold text-gray-400">Best For</span>
-            </div>
+      {/* Implementation Models */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Flexible Implementation Models
+            </h2>
+            <p className="text-xl text-gray-600">
+              Choose the implementation approach that works best for your school
+            </p>
           </div>
 
-          <p className="text-sm text-gray-500 italic mb-4">
-            — Your Principal, Educational Innovator
-          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {implementationModels.map((model, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {model.name}
+                </h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  {model.description}
+                </p>
 
-          {model.features.map((feature, idx) => (
-            <div key={idx} className="flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
-              <span className="text-gray-700 text-sm">{feature}</span>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="font-semibold text-blue-600">{model.commitment}</div>
+                    <div className="text-xs text-gray-500">Time Commitment</div>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 rounded-lg">
+                    <div className="font-semibold text-green-600 text-sm">{model.bestFor}</div>
+                    <div className="text-xs text-gray-500">Best For</div>
+                  </div>
+                </div>
 
-{/* Partner Schools - Coming Soon */}
-<section id="testimonials" className="py-20">
-  <div className="max-w-7xl mx-auto px-4">
-    <div className="text-center mb-16">
-      <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Partner Schools</h2>
-      <p className="text-xl text-gray-600">
-        A new era of education is unfolding. Schools that believe in real-world transformation will soon be here.
-      </p>
-    </div>
-
-    <div className="grid lg:grid-cols-3 gap-8">
-      {[1, 2, 3].map((_, index) => (
-        <div
-          key={index}
-          className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center text-center"
-        >
-          <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-2xl mb-4">
-            🏫
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Coming Soon</h3>
-          <p className="text-gray-600 mb-4">Future Partner Institution</p>
-          <blockquote className="text-gray-700 italic mb-6">
-            “We’re excited to collaborate with institutions that believe in change.”
-          </blockquote>
-
-          <div className="space-y-2 mb-4 w-full max-w-xs">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Students:</span>
-              <span className="font-semibold text-gray-400">—</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Programs:</span>
-              <span className="font-semibold text-gray-400">—</span>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-200 pt-4 w-full">
-            <p className="text-sm text-gray-500 italic">— Future Principal, Visionary Educator</p>
-          </div>
-
-          <div className="flex text-yellow-300 mt-3 opacity-50">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="h-4 w-4 fill-current" />
+                <div className="space-y-2">
+                  {model.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
+                      <span className="text-gray-700 text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
-
+      </section>
 
       {/* Onboarding Process */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Simple Onboarding Process</h2>
@@ -355,10 +300,6 @@ const Schools: React.FC = () => {
           
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <input type="hidden" name="access_key" value="03eff22b-fb87-4824-bbe6-1f3e42eadb02" />
-              <input type="hidden" name="_redirect" value={`${window.location.origin}/form-success?type=school`} />
-              <input type="hidden" name="subject" value="School Partnership Inquiry - Transform Education" />
-              
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="schoolName" className="block text-sm font-medium text-gray-700 mb-2">
@@ -537,9 +478,24 @@ const Schools: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors"
+                disabled={isSubmitting}
+                className={`w-full px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                  isSubmitting 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-blue-600 hover:bg-blue-700'
+                } text-white`}
               >
-                Book Demo & Partnership Discussion
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="mr-2 h-5 w-5" />
+                    Book Demo & Partnership Discussion
+                  </>
+                )}
               </button>
             </form>
           </div>
