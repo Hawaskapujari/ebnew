@@ -1,6 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { CheckCircle, Home, ArrowRight, Mail, Calendar, Clock, Award, Users, Building, Briefcase, Heart, FileText, BookOpen, Shield } from 'lucide-react';
+import { 
+  CheckCircle, 
+  Home, 
+  ArrowRight, 
+  Mail, 
+  Calendar, 
+  Clock, 
+  Award, 
+  Users, 
+  Building, 
+  Briefcase, 
+  Heart, 
+  FileText, 
+  Code,       // ✅ added
+  BookOpen,   // ✅ added
+  Shield      // ✅ added
+} from 'lucide-react';
 
 interface SuccessConfig {
   title: string;
@@ -62,7 +78,7 @@ const FormSuccess: React.FC = () => {
           'Track-specific mentor assignment',
           'Advanced program onboarding'
         ],
-        icon: <BookOpen className="h-12 w-12" />,
+        icon: <BookOpen className="h-12 w-12" />, // ✅ fixed
         color: 'green',
         estimatedResponse: '5-7 business days',
         additionalInfo: 'SSP offers specialized tracks in AI/ML, UX Design, Business Strategy, and Cybersecurity.'
@@ -78,7 +94,7 @@ const FormSuccess: React.FC = () => {
           'Foundation program onboarding',
           'Integration with other EthicBizz programs'
         ],
-        icon: <Shield className="h-12 w-12" />,
+        icon: <Shield className="h-12 w-12" />, // ✅ fixed
         color: 'purple',
         estimatedResponse: '3-5 business days',
         additionalInfo: 'EPC integrates with all our programs to provide a strong ethical foundation.'
@@ -94,7 +110,7 @@ const FormSuccess: React.FC = () => {
           'Industry mentor assignment',
           'Real-world project commencement'
         ],
-        icon: <Code className="h-12 w-12" />,
+        icon: <Code className="h-12 w-12" />, // ✅ fixed
         color: 'orange',
         estimatedResponse: '3-5 business days',
         additionalInfo: 'ERWA includes hackathons, startup simulations, and NGO collaborations.'
@@ -149,7 +165,6 @@ const FormSuccess: React.FC = () => {
       }
     };
 
-    // Check for program-specific applications
     if (program && configurations[program]) {
       setConfig(configurations[program]);
     } else if (configurations[type]) {
