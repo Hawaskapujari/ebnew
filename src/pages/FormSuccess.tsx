@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { CheckCircle, Home, ArrowRight, Mail, Calendar, Clock, Award, Users, Building, Briefcase, Heart, FileText, BookOpen } from 'lucide-react';
+import { CheckCircle, Home, ArrowRight, Mail, Calendar, Clock, Award, Users, Building, Briefcase, Heart, FileText, BookOpen, Shield } from 'lucide-react';
 
 interface SuccessConfig {
   title: string;
