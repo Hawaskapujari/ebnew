@@ -15,7 +15,6 @@ import Schools from "./pages/Schools";
 import Mentors from "./pages/Mentors";
 import MentorSpotlight from "./pages/MentorSpotlight";
 import Success from "./pages/Success";
-import SuccessDetail from "./pages/SuccessDetail"; // ✅ make sure this file exists
 import Portfolio from "./pages/Portfolio";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
@@ -26,6 +25,9 @@ import Verify from "./pages/Verify";
 import Legal from "./pages/Legal";
 import FormSuccess from "./pages/FormSuccess";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   return (
@@ -44,16 +46,18 @@ function App() {
           <Route path="/mentors" element={<Mentors />} />
           <Route path="/mentors/spotlight" element={<MentorSpotlight />} />
           <Route path="/success" element={<Success />} />
-          <Route path="/success/:slug" element={<SuccessDetail />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/join" element={<Join />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/form-success" element={<FormSuccess />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/legal" element={<Legal />} />
+          <Route path="/admin-login-secure" element={<AdminLogin />} />
+          <Route path="/ethicbizz-admin-dashboard-2025-secure" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

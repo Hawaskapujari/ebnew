@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Shield, CheckCircle, XCircle, Search, Award, Calendar, User, School } from 'lucide-react';
+import { Shield, CheckCircle, XCircle, Search, Award, Calendar, User, School, Download } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const Verify: React.FC = () => {
   const [certificateId, setCertificateId] = useState('');
   const [studentName, setStudentName] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [verificationResult, setVerificationResult] = useState<any>(null);
 
   const handleSearch = async () => {
     if (!certificateId.trim() || !studentName.trim()) {
@@ -14,18 +16,57 @@ const Verify: React.FC = () => {
 
     setIsSearching(true);
     setHasSearched(false);
+    setVerificationResult(null);
 
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const { data: certificate, error } = await supabase
+        .from('certificates')
+        .select(`
+          *,
+          students (
+            student_id,
+            users (first_name, last_name),
+            school_name,
+            grade
+          ),
+          programs (name, code, description)
+        `)
+        .eq('certificate_id', certificateId.trim())
+        .eq('is_verified', true)
+        .single();
 
-    // Since we don't have certificates yet, always show not found
-    setIsSearching(false);
-    setHasSearched(true);
+      if (error || !certificate) {
+        setVerificationResult({ found: false });
+      } else {
+        // Check if student name matches
+        const fullName = `${certificate.students.users.first_name} ${certificate.students.users.last_name}`.toLowerCase();
+        const searchName = studentName.toLowerCase().trim();
+        
+        if (fullName.includes(searchName) || searchName.includes(fullName)) {
+          setVerificationResult({ found: true, certificate });
+        } else {
+          setVerificationResult({ found: false });
+        }
+      }
+    } catch (error) {
+      console.error('Verification error:', error);
+      setVerificationResult({ found: false });
+    } finally {
+      setIsSearching(false);
+      setHasSearched(true);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearch();
+    }
+  };
+
+  const downloadCertificate = async () => {
+    if (verificationResult?.certificate) {
+      // In a real implementation, this would generate and download a PDF
+      alert('Certificate download feature will be implemented with PDF generation');
     }
   };
 
@@ -123,37 +164,119 @@ const Verify: React.FC = () => {
       {hasSearched && (
         <section className="py-12">
           <div className="max-w-4xl mx-auto px-4">
-            <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-orange-200">
-              <div className="flex items-center justify-center mb-8">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                  <XCircle className="h-10 w-10 text-orange-600" />
+            {verificationResult?.found ? (
+              <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-green-200">
+                <div className="flex items-center justify-center mb-8">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                    <CheckCircle className="h-10 w-10 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-green-800">Certificate Verified ✓</h3>
+                    <p className="text-green-600">This certificate is authentic and valid</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-orange-800">Certificate Database Building</h3>
-                  <p className="text-orange-600">Our verification system is being prepared</p>
+
+                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <User className="h-5 w-5 text-gray-400 mr-3" />
+                      <div>
+                        <p className="text-sm text-gray-600">Student Name</p>
+                        <p className="font-semibold text-gray-900">
+                          {verificationResult.certificate.students.users.first_name} {verificationResult.certificate.students.users.last_name}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <Award className="h-5 w-5 text-gray-400 mr-3" />
+                      <div>
+                        <p className="text-sm text-gray-600">Program</p>
+                        <p className="font-semibold text-gray-900">{verificationResult.certificate.programs.name}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <School className="h-5 w-5 text-gray-400 mr-3" />
+                      <div>
+                        <p className="text-sm text-gray-600">School</p>
+                        <p className="font-semibold text-gray-900">{verificationResult.certificate.students.school_name}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <Calendar className="h-5 w-5 text-gray-400 mr-3" />
+                      <div>
+                        <p className="text-sm text-gray-600">Issue Date</p>
+                        <p className="font-semibold text-gray-900">
+                          {new Date(verificationResult.certificate.issue_date).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <Shield className="h-5 w-5 text-gray-400 mr-3" />
+                      <div>
+                        <p className="text-sm text-gray-600">Certificate ID</p>
+                        <p className="font-semibold text-gray-900">{verificationResult.certificate.certificate_id}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <Award className="h-5 w-5 text-gray-400 mr-3" />
+                      <div>
+                        <p className="text-sm text-gray-600">Type</p>
+                        <p className="font-semibold text-gray-900 capitalize">{verificationResult.certificate.certificate_type}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <button
+                    onClick={downloadCertificate}
+                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold inline-flex items-center transition-colors"
+                  >
+                    <Download className="mr-2 h-5 w-5" />
+                    Download Certificate
+                  </button>
                 </div>
               </div>
+            ) : (
+              <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-red-200">
+                <div className="flex items-center justify-center mb-8">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                    <XCircle className="h-10 w-10 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-red-800">Certificate Not Found</h3>
+                    <p className="text-red-600">Unable to verify this certificate</p>
+                  </div>
+                </div>
 
-              <div className="bg-orange-50 rounded-lg p-6">
-                <h4 className="font-semibold text-orange-900 mb-3">Certificate Verification Coming Soon:</h4>
-                <ul className="text-sm text-orange-800 space-y-2">
-                  <li>• Our first certificates will be issued upon program completion</li>
-                  <li>• Verification database is being built with security features</li>
-                  <li>• All certificates will be digitally signed and blockchain-verified</li>
-                  <li>• Industry partners will have direct access to verification</li>
-                </ul>
-              </div>
+                <div className="bg-red-50 rounded-xl p-4 mb-8">
+                  <h4 className="font-semibold text-red-900 mb-3">Possible reasons:</h4>
+                  <ul className="text-sm text-red-800 space-y-2">
+                    <li>• Certificate ID is incorrect or doesn't exist</li>
+                    <li>• Student name doesn't match our records</li>
+                    <li>• Certificate may have been revoked</li>
+                    <li>• Typing error in certificate ID or name</li>
+                  </ul>
+                </div>
 
-              <div className="mt-6 text-center">
-                <p className="text-gray-600 mb-4">Questions about certification? Contact our team:</p>
-                <a
-                  href="mailto:hello@ethicbizz.org"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold inline-flex items-center transition-colors"
-                >
-                  Contact Certification Team
-                </a>
+                <div className="text-center">
+                  <p className="text-gray-600 mb-4">Need help verifying a certificate?</p>
+                  <a
+                    href="mailto:hello@ethicbizz.org"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold inline-flex items-center transition-colors"
+                  >
+                    Contact Support Team
+                  </a>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
       )}
@@ -164,7 +287,7 @@ const Verify: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">About EthicBizz Certificates</h2>
             <p className="text-xl text-gray-600">
-              Our certificates will represent verified achievements in ethical technology education
+              Our certificates represent verified achievements in ethical technology education
             </p>
           </div>
 
@@ -175,7 +298,7 @@ const Verify: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Secure & Verified</h3>
               <p className="text-gray-600">
-                All certificates will be digitally signed and stored in our secure database with unique identifiers.
+                All certificates are digitally signed and stored in our secure database with unique identifiers.
               </p>
             </div>
 
@@ -185,7 +308,7 @@ const Verify: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Industry Recognized</h3>
               <p className="text-gray-600">
-                Our certificates will be recognized by leading companies and educational institutions across India.
+                Our certificates are recognized by leading companies and educational institutions across India.
               </p>
             </div>
 
@@ -195,7 +318,7 @@ const Verify: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Skills Validated</h3>
               <p className="text-gray-600">
-                Each certificate will represent verified competency in specific skills through project-based assessment.
+                Each certificate represents verified competency in specific skills through project-based assessment.
               </p>
             </div>
           </div>

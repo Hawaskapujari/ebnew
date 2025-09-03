@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { authService } from '../lib/auth';
+import AuthModal from './Auth/AuthModal';
 import {
   Menu,
   X,
@@ -32,6 +34,9 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  const [currentUser, setCurrentUser] = useState(authService.getCurrentUser());
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -179,6 +184,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setActiveDropdown(null);
   };
 
+  const openAuthModal = (mode: 'signin' | 'signup') => {
+    setAuthMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const handleSignOut = async () => {
+    await authService.signOut();
+    setCurrentUser(null);
+    window.location.href = '/';
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Professional Header */}
@@ -263,12 +279,39 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   )}
                 </div>
               ))}
-              <Link
-                to="/contact"
-                className="btn-primary ml-4"
-              >
-                Contact Us
-              </Link>
+              <div className="flex items-center space-x-4 ml-4">
+                {currentUser ? (
+                  <div className="flex items-center space-x-3">
+                    <Link
+                      to="/dashboard"
+                      className="text-gray-700 hover:text-blue-600 font-medium"
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="text-gray-700 hover:text-red-600 font-medium"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => openAuthModal('signin')}
+                      className="text-gray-700 hover:text-blue-600 font-medium"
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={() => openAuthModal('signup')}
+                      className="btn-primary"
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                )}
+              </div>
             </nav>
 
             {/* Mobile menu button */}
@@ -325,11 +368,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
               ))}
               <Link
-                to="/contact"
+                to="/dashboard"
                 className="btn-primary w-full mt-4"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Contact Us
+                {currentUser ? 'Dashboard' : 'Sign In'}
               </Link>
             </div>
           </div>
@@ -338,6 +381,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Main Content */}
       <main className="pt-16">{children}</main>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        defaultMode={authMode}
+      />
 
       {/* Professional Footer */}
       <footer className="professional-footer">
