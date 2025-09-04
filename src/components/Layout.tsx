@@ -368,11 +368,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
               ))}
               <Link
-                to="/dashboard"
+                to={currentUser ? "/dashboard" : "#"}
+                onClick={currentUser ? () => setIsMenuOpen(false) : () => openAuthModal('signin')}
                 className="btn-primary w-full mt-4"
-                onClick={() => setIsMenuOpen(false)}
               >
-                {currentUser ? 'Dashboard' : 'Sign In'}
+                {currentUser ? 'Dashboard' : 'Sign In / Sign Up'}
               </Link>
             </div>
           </div>
@@ -533,19 +533,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
             </div>
             <div className="flex space-x-4">
-              <a href="https://www.facebook.com/share/1CtPqqyvem/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://www.facebook.com/share/1CtPqqyvem/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://twitter.com/ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://twitter.com/ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="https://www.instagram.com/ethicbizz?igsh=MWhsaXk0bWI4ZHQzMQ==" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://www.instagram.com/ethicbizz?igsh=MWhsaXk0bWI4ZHQzMQ==" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://www.linkedin.com/company/ethicbizz/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://www.linkedin.com/company/ethicbizz/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="https://youtube.com/@ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-800">
+              <a href="https://youtube.com/@ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>

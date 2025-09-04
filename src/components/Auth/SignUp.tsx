@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { User, Mail, Lock, Phone, Eye, EyeOff, UserCheck } from 'lucide-react';
+import { User, Mail, Lock, Phone, Eye, EyeOff, UserCheck, School, GraduationCap } from 'lucide-react';
 import { authService } from '../../lib/auth';
 
 interface SignUpProps {
@@ -16,7 +15,9 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, onSwitchToSignIn }) => {
     phone: '',
     password: '',
     confirmPassword: '',
-    role: 'student' as 'student' | 'mentor'
+    role: 'student' as 'student' | 'mentor',
+    grade: 9,
+    schoolName: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -49,6 +50,18 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, onSwitchToSignIn }) => {
       return;
     }
 
+    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+      setError('First name and last name are required');
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.role === 'student' && !formData.schoolName.trim()) {
+      setError('School name is required for students');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { user, error } = await authService.signUp({
         email: formData.email,
@@ -56,7 +69,9 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, onSwitchToSignIn }) => {
         firstName: formData.firstName,
         lastName: formData.lastName,
         phone: formData.phone,
-        role: formData.role
+        role: formData.role,
+        grade: formData.grade,
+        schoolName: formData.schoolName
       });
 
       if (error) {
@@ -64,8 +79,8 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, onSwitchToSignIn }) => {
       } else if (user) {
         onSuccess();
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (err: any) {
+      setError(err.message || 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -77,13 +92,13 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, onSwitchToSignIn }) => {
         <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <UserCheck className="h-8 w-8 text-blue-600" />
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
-        <p className="text-gray-600">Join the EthicBizz community</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Join EthicBizz</h2>
+        <p className="text-gray-600">Create your account to start learning</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
             {error}
           </div>
         )}
@@ -182,6 +197,53 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, onSwitchToSignIn }) => {
           </select>
         </div>
 
+        {formData.role === 'student' && (
+          <>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="grade" className="block text-sm font-medium text-gray-700 mb-2">
+                  Current Grade *
+                </label>
+                <div className="relative">
+                  <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <select
+                    id="grade"
+                    name="grade"
+                    required
+                    value={formData.grade}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value={9}>Grade 9</option>
+                    <option value={10}>Grade 10</option>
+                    <option value={11}>Grade 11</option>
+                    <option value={12}>Grade 12</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="schoolName" className="block text-sm font-medium text-gray-700 mb-2">
+                  School Name *
+                </label>
+                <div className="relative">
+                  <School className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    id="schoolName"
+                    name="schoolName"
+                    required={formData.role === 'student'}
+                    value={formData.schoolName}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Your school name"
+                  />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
             Password *
@@ -249,7 +311,10 @@ const SignUp: React.FC<SignUpProps> = ({ onSuccess, onSwitchToSignIn }) => {
               Creating Account...
             </>
           ) : (
-            'Create Account'
+            <>
+              <UserCheck className="mr-2 h-5 w-5" />
+              Create Account
+            </>
           )}
         </button>
       </form>

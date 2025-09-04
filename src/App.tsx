@@ -56,7 +56,7 @@ function App() {
           <Route path="/form-success" element={<FormSuccess />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/legal" element={<Legal />} />
-          <Route path="/admin-login-secure" element={<AdminLogin />} />
+          <Route path="/ethicbizz-admin-login-secure" element={<AdminLogin />} />
           <Route path="/ethicbizz-admin-dashboard-2025-secure" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

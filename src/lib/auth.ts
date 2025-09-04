@@ -1,5 +1,4 @@
 import { supabase } from './supabase';
-import bcrypt from 'bcryptjs';
 
 export interface AuthUser {
   id: string;
@@ -17,6 +16,8 @@ export interface SignUpData {
   lastName: string;
   phone?: string;
   role?: 'student' | 'mentor';
+  grade?: number;
+  schoolName?: string;
 }
 
 export interface SignInData {
@@ -29,111 +30,143 @@ class AuthService {
 
   async signUp(data: SignUpData): Promise<{ user: AuthUser | null; error: string | null }> {
     try {
-      // Check if user already exists
-      const { data: existingUser } = await supabase
-        .from('users')
-        .select('id')
-        .eq('email', data.email)
-        .single();
+      // Use Supabase Auth for authentication
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            first_name: data.firstName,
+            last_name: data.lastName,
+            phone: data.phone,
+            role: data.role || 'student'
+          }
+        }
+      });
 
-      if (existingUser) {
-        return { user: null, error: 'User already exists with this email' };
+      if (authError) {
+        return { user: null, error: authError.message };
       }
 
-      // Hash password
-      const passwordHash = await bcrypt.hash(data.password, 12);
+      if (!authData.user) {
+        return { user: null, error: 'Failed to create user' };
+      }
 
-      // Create user
-      const { data: newUser, error } = await supabase
+      // Create user profile in our users table
+      const { data: userProfile, error: profileError } = await supabase
         .from('users')
         .insert({
+          id: authData.user.id,
           email: data.email,
-          password_hash: passwordHash,
           first_name: data.firstName,
           last_name: data.lastName,
           phone: data.phone,
           role: data.role || 'student',
-          verification_token: crypto.randomUUID()
+          is_verified: true // Auto-verify for now
         })
         .select()
         .single();
 
-      if (error) {
-        return { user: null, error: error.message };
+      if (profileError) {
+        return { user: null, error: profileError.message };
       }
 
       // If student, create student profile
-      if (newUser.role === 'student') {
+      if (userProfile.role === 'student') {
         await supabase
           .from('students')
           .insert({
-            user_id: newUser.id,
-            grade: 9, // Default, can be updated later
-            school_name: 'To be updated'
+            user_id: userProfile.id,
+            grade: data.grade || 9,
+            school_name: data.schoolName || 'To be updated'
+          });
+      }
+
+      // If mentor, create mentor profile
+      if (userProfile.role === 'mentor') {
+        await supabase
+          .from('mentors')
+          .insert({
+            user_id: userProfile.id,
+            mentor_id: `MEN${Date.now()}`,
+            company: 'To be updated',
+            designation: 'To be updated',
+            experience_years: 0,
+            expertise_areas: ['General']
           });
       }
 
       const user: AuthUser = {
-        id: newUser.id,
-        email: newUser.email,
-        role: newUser.role,
-        first_name: newUser.first_name,
-        last_name: newUser.last_name,
-        is_verified: newUser.is_verified
+        id: userProfile.id,
+        email: userProfile.email,
+        role: userProfile.role,
+        first_name: userProfile.first_name,
+        last_name: userProfile.last_name,
+        is_verified: userProfile.is_verified
       };
 
       this.currentUser = user;
       localStorage.setItem('ethicbizz_user', JSON.stringify(user));
 
       return { user, error: null };
-    } catch (error) {
-      return { user: null, error: 'An error occurred during sign up' };
+    } catch (error: any) {
+      return { user: null, error: error.message || 'An error occurred during sign up' };
     }
   }
 
   async signIn(data: SignInData): Promise<{ user: AuthUser | null; error: string | null }> {
     try {
-      const { data: user, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', data.email)
-        .single();
+      // Use Supabase Auth for authentication
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password
+      });
 
-      if (error || !user) {
-        return { user: null, error: 'Invalid email or password' };
+      if (authError) {
+        return { user: null, error: authError.message };
       }
 
-      // Verify password
-      const isValidPassword = await bcrypt.compare(data.password, user.password_hash);
-      if (!isValidPassword) {
-        return { user: null, error: 'Invalid email or password' };
+      if (!authData.user) {
+        return { user: null, error: 'Invalid credentials' };
+      }
+
+      // Get user profile from our users table
+      const { data: userProfile, error: profileError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (profileError || !userProfile) {
+        return { user: null, error: 'User profile not found' };
       }
 
       // Update last login
       await supabase
         .from('users')
         .update({ last_login: new Date().toISOString() })
-        .eq('id', user.id);
+        .eq('id', userProfile.id);
 
-      const authUser: AuthUser = {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        is_verified: user.is_verified
+      const user: AuthUser = {
+        id: userProfile.id,
+        email: userProfile.email,
+        role: userProfile.role,
+        first_name: userProfile.first_name,
+        last_name: userProfile.last_name,
+        is_verified: userProfile.is_verified
       };
 
-      this.currentUser = authUser;
-      localStorage.setItem('ethicbizz_user', JSON.stringify(authUser));
+      this.currentUser = user;
+      localStorage.setItem('ethicbizz_user', JSON.stringify(user));
 
-      return { user: authUser, error: null };
-    } catch (error) {
-      return { user: null, error: 'An error occurred during sign in' };
+      return { user, error: null };
+    } catch (error: any) {
+      return { user: null, error: error.message || 'An error occurred during sign in' };
     }
   }
 
   async signOut(): Promise<void> {
+    await supabase.auth.signOut();
     this.currentUser = null;
     localStorage.removeItem('ethicbizz_user');
   }
@@ -163,6 +196,39 @@ class AuthService {
   hasRole(role: string): boolean {
     const user = this.getCurrentUser();
     return user?.role === role;
+  }
+
+  async checkAuthState(): Promise<AuthUser | null> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        const { data: userProfile } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (userProfile) {
+          const authUser: AuthUser = {
+            id: userProfile.id,
+            email: userProfile.email,
+            role: userProfile.role,
+            first_name: userProfile.first_name,
+            last_name: userProfile.last_name,
+            is_verified: userProfile.is_verified
+          };
+
+          this.currentUser = authUser;
+          localStorage.setItem('ethicbizz_user', JSON.stringify(authUser));
+          return authUser;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      return null;
+    }
   }
 }
 

@@ -30,7 +30,7 @@
     <meta name="twitter:image" content="/og-image.jpg" />
 
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.web3forms.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://api.web3forms.com https://wa.me; frame-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.web3forms.com https://*.supabase.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://api.web3forms.com https://wa.me https://*.supabase.co wss://*.supabase.co; frame-src 'self';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
@@ -102,6 +102,18 @@
             devtools.open = false;
           }
         }, 500);
+        
+        // Prevent common inspection methods
+        document.addEventListener('keydown', function(e) {
+          if (e.ctrlKey && (e.key === 'i' || e.key === 'j' || e.key === 'u')) {
+            e.preventDefault();
+          }
+        });
+        
+        // Disable drag and drop
+        document.addEventListener('dragstart', function(e) {
+          e.preventDefault();
+        });
       })();
       
       // Performance monitoring
