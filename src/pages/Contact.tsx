@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -13,28 +14,53 @@ const Contact: React.FC = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
 
     try {
+      // Store in database
+      const { error: dbError } = await supabase
+        .from('applications')
+        .insert({
+          application_type: 'contact',
+          applicant_name: formData.name,
+          applicant_email: formData.email,
+          applicant_phone: formData.phone,
+          form_data: {
+            subject: formData.subject,
+            message: formData.message,
+            inquiry_type: formData.type
+          },
+          status: 'pending',
+          priority: 'normal'
+        });
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+      }
+
+      // Send via Web3Forms
       const formDataToSend = new FormData();
       formDataToSend.append('access_key', '03eff22b-fb87-4824-bbe6-1f3e42eadb02');
       formDataToSend.append('subject', `Contact Form: ${formData.subject}`);
       formDataToSend.append('from_name', 'EthicBizz Website');
-      formDataToSend.append('_redirect', `${window.location.origin}/form-success?type=contact`);
-      
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('inquiry_type', formData.type);
+      formDataToSend.append('message', formData.message);
 
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -43,14 +69,20 @@ const Contact: React.FC = () => {
 
       if (response.ok) {
         setIsSubmitted(true);
-        setTimeout(() => {
-          window.location.href = '/form-success?type=contact';
-        }, 1000);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: '',
+          type: 'general'
+        });
       } else {
-        throw new Error('Submission failed');
+        throw new Error('Failed to send message');
       }
-    } catch (error) {
-      alert('There was an error sending your message. Please try again.');
+    } catch (error: any) {
+      setError('There was an error sending your message. Please try again.');
+      console.error('Contact form error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -114,6 +146,13 @@ const Contact: React.FC = () => {
             {/* Contact Form */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
               <h2 className="text-3xl font-bold text-gray-900 mb-8">Send us a Message</h2>
+              
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center">
+                  <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span className="text-sm">{error}</span>
+                </div>
+              )}
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">

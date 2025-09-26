@@ -21,8 +21,8 @@ import {
 const Home: React.FC = () => {
   const stats = [
     {
-      number: 'Growing',
-      label: 'Students Impacted',
+      number: 'Building',
+      label: 'Student Community',
       icon: <Users className="h-8 w-8" />
     },
     {
@@ -31,13 +31,13 @@ const Home: React.FC = () => {
       icon: <Award className="h-8 w-8" />
     },
     {
-      number: 'Partner',
-      label: 'Partner Schools',
+      number: 'Growing',
+      label: 'Partner Network',
       icon: <BookOpen className="h-8 w-8" />
     },
     {
       number: 'Excellence',
-      label: 'Success Rate',
+      label: 'Focused Mission',
       icon: <Target className="h-8 w-8" />
     }
   ];
@@ -102,27 +102,6 @@ const Home: React.FC = () => {
       title: 'Global Recognition',
       description: 'Internationally recognized certifications and industry partnerships.',
       icon: <Globe className="h-6 w-6" />
-    }
-  ];
-
-  const testimonials = [
-    {
-      text: "We're building something extraordinary. The first testimonials will be from students who dare to dream and act.",
-      author: "Future Student",
-      role: "Upcoming Graduate",
-      school: "Your School Here"
-    },
-    {
-      text: "Innovation in education starts with institutions that believe in change. We're ready to partner with visionary schools.",
-      author: "Future Principal",
-      role: "Educational Leader",
-      school: "Partner School"
-    },
-    {
-      text: "The best mentors are those who see potential before it's realized. We're assembling a network of industry leaders.",
-      author: "Future Mentor",
-      role: "Industry Expert",
-      school: "Leading Company"
     }
   ];
 
@@ -258,40 +237,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="section-padding section-bg-light">
-        <div className="container-professional">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Our Community Says
-            </h2>
-            <p className="text-xl text-gray-600">
-              Hear from students, educators, and mentors who are part of our journey
-            </p>
-          </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="professional-card">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <blockquote className="text-gray-700 mb-6 leading-relaxed">
-                  "{testimonial.text}"
-                </blockquote>
-                <div>
-                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
-                  <div className="text-sm text-gray-600">{testimonial.role}</div>
-                  <div className="text-sm text-gray-500">{testimonial.school}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="section-padding section-bg-primary">
         <div className="container-professional text-center">
@@ -299,7 +244,7 @@ const Home: React.FC = () => {
             Ready to Transform Your Future?
           </h2>
           <p className="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">
-            Join thousands of students who are already building tomorrow's ethical businesses today.
+            Join the movement to build tomorrow's ethical businesses today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/programs" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold inline-flex items-center transition-colors">
