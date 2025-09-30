@@ -23,13 +23,9 @@ const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const Join = lazy(() => import("./pages/Join"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
-const Verify = lazy(() => import("./pages/Verify"));
 const Legal = lazy(() => import("./pages/Legal"));
 const FormSuccess = lazy(() => import("./pages/FormSuccess"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 
 function App() {
   return (
@@ -54,13 +50,9 @@ function App() {
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/join" element={<Join />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/form-success" element={<FormSuccess />} />
-            <Route path="/verify" element={<Verify />} />
             <Route path="/legal" element={<Legal />} />
-            <Route path="/ethicbizz-admin-login-secure" element={<AdminLogin />} />
-            <Route path="/ethicbizz-admin-dashboard-2025-secure" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

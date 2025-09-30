@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { authService } from '../lib/auth';
-import AuthModal from './Auth/AuthModal';
 import {
   Menu,
   X,
@@ -34,9 +32,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
-  const [currentUser, setCurrentUser] = useState(authService.getCurrentUser());
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -89,8 +84,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             }
           ],
         },
+      ],
+    },
+    {
+      name: 'Core Components',
+      href: '/programs/epc',
+      submenu: [
         {
-          category: 'Core Components',
+          category: 'Foundation Components',
           items: [
             {
               name: 'Ethical Professional Core',
@@ -155,12 +156,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               icon: <FileText className="h-4 w-4" />
             },
             {
-              name: 'Verify Certificate',
-              href: '/verify',
-              description: 'Certificate verification',
-              icon: <CheckCircle className="h-4 w-4" />
-            },
-            {
               name: 'Portfolio Showcase',
               href: '/portfolio',
               description: 'Student projects',
@@ -182,17 +177,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const handleDropdownLeave = () => {
     setActiveDropdown(null);
-  };
-
-  const openAuthModal = (mode: 'signin' | 'signup') => {
-    setAuthMode(mode);
-    setIsAuthModalOpen(true);
-  };
-
-  const handleSignOut = async () => {
-    await authService.signOut();
-    setCurrentUser(null);
-    window.location.href = '/';
   };
 
   return (
@@ -279,39 +263,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   )}
                 </div>
               ))}
-              <div className="flex items-center space-x-4 ml-4">
-                {currentUser ? (
-                  <div className="flex items-center space-x-3">
-                    <Link
-                      to="/dashboard"
-                      className="text-gray-700 hover:text-blue-600 font-medium"
-                    >
-                      Dashboard
-                    </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="text-gray-700 hover:text-red-600 font-medium"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-3">
-                    <button
-                      onClick={() => openAuthModal('signin')}
-                      className="text-gray-700 hover:text-blue-600 font-medium"
-                    >
-                      Sign In
-                    </button>
-                    <button
-                      onClick={() => openAuthModal('signup')}
-                      className="btn-primary"
-                    >
-                      Sign Up
-                    </button>
-                  </div>
-                )}
-              </div>
             </nav>
 
             {/* Mobile menu button */}
@@ -367,13 +318,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   )}
                 </div>
               ))}
-              <Link
-                to={currentUser ? "/dashboard" : "#"}
-                onClick={currentUser ? () => setIsMenuOpen(false) : () => openAuthModal('signin')}
-                className="btn-primary w-full mt-4"
-              >
-                {currentUser ? 'Dashboard' : 'Sign In / Sign Up'}
-              </Link>
             </div>
           </div>
         )}
@@ -381,13 +325,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Main Content */}
       <main className="pt-16">{children}</main>
-
-      {/* Auth Modal */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        defaultMode={authMode}
-      />
 
       {/* Professional Footer */}
       <footer className="professional-footer">
@@ -451,6 +388,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </ul>
             </div>
 
+            {/* Core Components */}
+            <div>
+              <h3 className="font-semibold text-white mb-4">Core Components</h3>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <Link to="/programs/epc" className="text-gray-300 hover:text-white transition-colors flex items-center">
+                    <Shield className="h-4 w-4 mr-2 text-blue-400" />
+                    Ethical Professional Core
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/programs/erwa" className="text-gray-300 hover:text-white transition-colors flex items-center">
+                    <Code className="h-4 w-4 mr-2 text-blue-400" />
+                    Real-World Application
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/programs/ecp" className="text-gray-300 hover:text-white transition-colors flex items-center">
+                    <Award className="h-4 w-4 mr-2 text-blue-400" />
+                    Capstone Project
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
             {/* Community */}
             <div>
               <h3 className="font-semibold text-white mb-4">Community</h3>
@@ -473,29 +435,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     Join Us
                   </Link>
                 </li>
-              </ul>
-            </div>
-
-            {/* Resources */}
-            <div>
-              <h3 className="font-semibold text-white mb-4">Resources</h3>
-              <ul className="space-y-3 text-sm">
                 <li>
                   <Link to="/blog" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <FileText className="h-4 w-4 mr-2 text-blue-400" />
                     Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/verify" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <CheckCircle className="h-4 w-4 mr-2 text-blue-400" />
-                    Verify Certificate
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/portfolio" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Code className="h-4 w-4 mr-2 text-blue-400" />
-                    Student Portfolio
                   </Link>
                 </li>
               </ul>
