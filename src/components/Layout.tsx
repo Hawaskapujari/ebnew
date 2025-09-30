@@ -12,7 +12,6 @@ import {
   Instagram,
   Facebook,
   Youtube,
-  ArrowRight,
   BookOpen,
   Users,
   Award,
@@ -21,8 +20,7 @@ import {
   Globe,
   Code,
   Shield,
-  FileText,
-  CheckCircle
+  FileText
 } from 'lucide-react';
 
 interface LayoutProps {

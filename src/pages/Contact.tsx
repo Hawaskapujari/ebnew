@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -30,28 +29,6 @@ const Contact: React.FC = () => {
     setError('');
 
     try {
-      // Store in database
-      const { error: dbError } = await supabase
-        .from('applications')
-        .insert({
-          application_type: 'contact',
-          applicant_name: formData.name,
-          applicant_email: formData.email,
-          applicant_phone: formData.phone,
-          form_data: {
-            subject: formData.subject,
-            message: formData.message,
-            inquiry_type: formData.type
-          },
-          status: 'pending',
-          priority: 'normal'
-        });
-
-      if (dbError) {
-        console.error('Database error:', dbError);
-      }
-
-      // Send via Web3Forms
       const formDataToSend = new FormData();
       formDataToSend.append('access_key', '03eff22b-fb87-4824-bbe6-1f3e42eadb02');
       formDataToSend.append('subject', `Contact Form: ${formData.subject}`);
