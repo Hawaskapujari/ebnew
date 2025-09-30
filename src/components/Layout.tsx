@@ -33,163 +33,71 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
-  const isActiveGroup = (paths: string[]) =>
-    paths.some((path) => location.pathname === path);
 
   const navigation = [
     { name: 'Home', href: '/' },
-    {
-      name: 'About',
-      href: '/about',
-      submenu: [
-        {
-          category: 'Organization',
-          items: [
-            {
-              name: 'About EthicBizz',
-              href: '/about',
-              description: 'Our mission and vision',
-              icon: <Heart className="h-4 w-4" />
-            },
-            {
-              name: 'Success Stories',
-              href: '/success',
-              description: 'Student achievements',
-              icon: <Award className="h-4 w-4" />
-            }
-          ],
-        },
-      ],
-    },
+    { name: 'About', href: '/about' },
     {
       name: 'Programs',
       href: '/programs',
       submenu: [
         {
-          category: 'Student Programs',
-          items: [
-            {
-              name: 'Youth Development (YDP)',
-              href: '/programs/ydp',
-              description: 'Grades 9-10 foundation',
-              icon: <Users className="h-4 w-4" />
-            },
-            {
-              name: 'Senior Secondary (SSP)',
-              href: '/programs/ssp',
-              description: 'Grades 11-12 specialization',
-              icon: <BookOpen className="h-4 w-4" />
-            }
-          ],
+          name: 'Youth Development (YDP)',
+          href: '/programs/ydp',
+          description: 'Grades 9-10',
+          icon: <Users className="h-4 w-4" />
         },
-      ],
+        {
+          name: 'Senior Secondary (SSP)',
+          href: '/programs/ssp',
+          description: 'Grades 11-12',
+          icon: <BookOpen className="h-4 w-4" />
+        }
+      ]
     },
     {
       name: 'Core Components',
       href: '/programs/epc',
       submenu: [
         {
-          category: 'Foundation Components',
-          items: [
-            {
-              name: 'Ethical Professional Core',
-              href: '/programs/epc',
-              description: 'Foundation framework',
-              icon: <Shield className="h-4 w-4" />
-            },
-            {
-              name: 'Real-World Application',
-              href: '/programs/erwa',
-              description: 'Practical experience',
-              icon: <Code className="h-4 w-4" />
-            },
-            {
-              name: 'Capstone Project',
-              href: '/programs/ecp',
-              description: 'Final project',
-              icon: <Award className="h-4 w-4" />
-            }
-          ],
+          name: 'Ethical Professional Core',
+          href: '/programs/epc',
+          description: 'Foundation',
+          icon: <Shield className="h-4 w-4" />
         },
-      ],
-    },
-    {
-      name: 'For Schools',
-      href: '/schools'
-    },
-    {
-      name: 'Mentors',
-      href: '/mentors',
-      submenu: [
         {
-          category: 'Mentorship',
-          items: [
-            {
-              name: 'Become a Mentor',
-              href: '/mentors',
-              description: 'Join our network',
-              icon: <Users className="h-4 w-4" />
-            },
-            {
-              name: 'Mentor Spotlight',
-              href: '/mentors/spotlight',
-              description: 'Featured mentors',
-              icon: <Award className="h-4 w-4" />
-            }
-          ],
+          name: 'Real-World Application',
+          href: '/programs/erwa',
+          description: 'Practical',
+          icon: <Code className="h-4 w-4" />
         },
-      ],
-    },
-    {
-      name: 'Resources',
-      href: '/blog',
-      submenu: [
         {
-          category: 'Resources',
-          items: [
-            {
-              name: 'Blog & Insights',
-              href: '/blog',
-              description: 'Latest articles',
-              icon: <FileText className="h-4 w-4" />
-            },
-            {
-              name: 'Portfolio Showcase',
-              href: '/portfolio',
-              description: 'Student projects',
-              icon: <Globe className="h-4 w-4" />
-            }
-          ],
-        },
-      ],
+          name: 'Capstone Project',
+          href: '/programs/ecp',
+          description: 'Final Project',
+          icon: <Award className="h-4 w-4" />
+        }
+      ]
     },
-    {
-      name: 'Join Us',
-      href: '/join'
-    }
+    { name: 'Schools', href: '/schools' },
+    { name: 'Mentors', href: '/mentors' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Contact', href: '/contact' }
   ];
-
-  const handleDropdownEnter = (itemName: string) => {
-    setActiveDropdown(itemName);
-  };
-
-  const handleDropdownLeave = () => {
-    setActiveDropdown(null);
-  };
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Professional Header */}
-      <header className="professional-header fixed top-0 left-0 right-0 z-50">
-        <div className="container-professional">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center space-x-3">
+      {/* Compressed Header */}
+      <header className="bg-white/95 backdrop-blur-lg border-b border-gray-200 fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between items-center h-14">
+            <Link to="/" className="flex items-center space-x-2">
               <img
                 src="/Screenshot 2025-06-19 111546.png"
-                alt="EthicBizz Logo"
-                className="w-10 h-10 object-contain"
+                alt="EthicBizz"
+                className="w-8 h-8 object-contain"
               />
-              <span className="text-xl font-bold text-gray-900">EthicBizz</span>
+              <span className="text-lg font-bold text-gray-900">EthicBizz</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -199,54 +107,40 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   {item.submenu ? (
                     <div
                       className="relative"
-                      onMouseEnter={() => handleDropdownEnter(item.name)}
-                      onMouseLeave={handleDropdownLeave}
+                      onMouseEnter={() => setActiveDropdown(item.name)}
+                      onMouseLeave={() => setActiveDropdown(null)}
                     >
-                      <Link
-                        to={item.href}
-                        className={`nav-link ${
-                          isActiveGroup(
-                            item.submenu.flatMap((cat) =>
-                              cat.items.map((sub) => sub.href)
-                            )
-                          ) ? 'active' : ''
+                      <button
+                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center ${
+                          isActive(item.href) ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                         }`}
                       >
                         {item.name}
-                        <ChevronDown className="ml-1 h-4 w-4" />
-                      </Link>
+                        <ChevronDown className="ml-1 h-3 w-3" />
+                      </button>
 
                       {activeDropdown === item.name && (
-                        <div className="absolute top-full left-0 mt-2 w-80 professional-card shadow-professional-xl border border-gray-200 py-4 z-50">
-                          {item.submenu.map((category, catIndex) => (
-                            <div key={catIndex} className="mb-4 last:mb-0">
-                              <div className="px-6 py-2">
-                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-                                  {category.category}
-                                </h3>
-                              </div>
-                              {category.items.map((subItem) => (
-                                <Link
-                                  key={subItem.name}
-                                  to={subItem.href}
-                                  className="block px-6 py-3 hover:bg-gray-50 transition-colors rounded-lg mx-2"
-                                >
-                                  <div className="flex items-center">
-                                    <div className="text-blue-600 mr-3">
-                                      {subItem.icon}
-                                    </div>
-                                    <div>
-                                      <div className="font-semibold text-gray-900 text-sm">
-                                        {subItem.name}
-                                      </div>
-                                      <div className="text-xs text-gray-500 mt-1">
-                                        {subItem.description}
-                                      </div>
-                                    </div>
+                        <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                          {item.submenu.map((subItem) => (
+                            <Link
+                              key={subItem.name}
+                              to={subItem.href}
+                              className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                            >
+                              <div className="flex items-center">
+                                <div className="text-blue-600 mr-2">
+                                  {subItem.icon}
+                                </div>
+                                <div>
+                                  <div className="font-medium text-gray-900 text-sm">
+                                    {subItem.name}
                                   </div>
-                                </Link>
-                              ))}
-                            </div>
+                                  <div className="text-xs text-gray-500">
+                                    {subItem.description}
+                                  </div>
+                                </div>
+                              </div>
+                            </Link>
                           ))}
                         </div>
                       )}
@@ -254,7 +148,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   ) : (
                     <Link
                       to={item.href}
-                      className={`nav-link ${isActive(item.href) ? 'active' : ''}`}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        isActive(item.href) ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                      }`}
                     >
                       {item.name}
                     </Link>
@@ -268,20 +164,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-200 shadow-professional-lg">
-            <div className="container-professional py-4 space-y-2 max-h-96 overflow-y-auto">
+          <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
+            <div className="max-w-7xl mx-auto px-4 py-3 space-y-1 max-h-80 overflow-y-auto">
               {navigation.map((item) => (
                 <div key={item.name}>
                   <Link
                     to={item.href}
-                    className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                    className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       isActive(item.href)
                         ? 'text-blue-600 bg-blue-50'
                         : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
@@ -291,26 +187,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     {item.name}
                   </Link>
                   {item.submenu && (
-                    <div className="ml-4 mt-2 space-y-1">
-                      {item.submenu.map((category) => (
-                        <div key={category.category}>
-                          <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                            {category.category}
+                    <div className="ml-4 mt-1 space-y-1">
+                      {item.submenu.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.href}
+                          className="flex items-center px-3 py-1 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <div className="text-blue-600 mr-2">
+                            {subItem.icon}
                           </div>
-                          {category.items.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              to={subItem.href}
-                              className="flex items-center px-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <div className="text-blue-600 mr-2">
-                                {subItem.icon}
-                              </div>
-                              <span>{subItem.name}</span>
-                            </Link>
-                          ))}
-                        </div>
+                          <span>{subItem.name}</span>
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -322,65 +211,53 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main Content */}
-      <main className="pt-16">{children}</main>
+      <main className="pt-14">{children}</main>
 
-      {/* Professional Footer */}
-      <footer className="professional-footer">
-        <div className="container-professional section-padding">
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Brand Section */}
-            <div className="lg:col-span-1">
-              <div className="flex items-center space-x-3 mb-6">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
                 <img
                   src="/Screenshot 2025-06-19 111546.png"
-                  alt="EthicBizz Logo"
-                  className="w-10 h-10 object-contain"
+                  alt="EthicBizz"
+                  className="w-8 h-8 object-contain"
                 />
-                <span className="text-xl font-bold text-white">EthicBizz</span>
+                <span className="text-lg font-bold">EthicBizz</span>
               </div>
-              <p className="text-gray-300 mb-6 text-sm leading-relaxed">
-                Empowering the next generation through ethical business education and real-world application.
+              <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                Building ethical leaders for tomorrow through innovative education.
               </p>
-              <div className="space-y-3 text-gray-300 text-sm">
+              <div className="space-y-2 text-gray-300 text-sm">
                 <div className="flex items-center">
-                  <Mail className="h-4 w-4 mr-3 text-blue-400" />
+                  <Mail className="h-4 w-4 mr-2 text-blue-400" />
                   <a href="mailto:hello@ethicbizz.org" className="hover:text-white transition-colors">
                     hello@ethicbizz.org
                   </a>
                 </div>
                 <div className="flex items-center">
-                  <Phone className="h-4 w-4 mr-3 text-blue-400" />
+                  <Phone className="h-4 w-4 mr-2 text-blue-400" />
                   <a href="tel:+917065200195" className="hover:text-white transition-colors">
                     +91 70652 00195
                   </a>
-                </div>
-                <div className="flex items-center">
-                  <MapPin className="h-4 w-4 mr-3 text-blue-400" />
-                  <span>New Delhi, India</span>
                 </div>
               </div>
             </div>
 
             {/* Programs */}
             <div>
-              <h3 className="font-semibold text-white mb-4">Programs</h3>
-              <ul className="space-y-3 text-sm">
+              <h3 className="font-semibold mb-4">Programs</h3>
+              <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/programs/ydp" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Users className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/programs/ydp" className="text-gray-300 hover:text-white transition-colors">
                     Youth Development (YDP)
                   </Link>
                 </li>
                 <li>
-                  <Link to="/programs/ssp" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <BookOpen className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/programs/ssp" className="text-gray-300 hover:text-white transition-colors">
                     Senior Secondary (SSP)
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/programs" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Globe className="h-4 w-4 mr-2 text-blue-400" />
-                    All Programs
                   </Link>
                 </li>
               </ul>
@@ -388,23 +265,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Core Components */}
             <div>
-              <h3 className="font-semibold text-white mb-4">Core Components</h3>
-              <ul className="space-y-3 text-sm">
+              <h3 className="font-semibold mb-4">Core Components</h3>
+              <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/programs/epc" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Shield className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/programs/epc" className="text-gray-300 hover:text-white transition-colors">
                     Ethical Professional Core
                   </Link>
                 </li>
                 <li>
-                  <Link to="/programs/erwa" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Code className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/programs/erwa" className="text-gray-300 hover:text-white transition-colors">
                     Real-World Application
                   </Link>
                 </li>
                 <li>
-                  <Link to="/programs/ecp" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Award className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/programs/ecp" className="text-gray-300 hover:text-white transition-colors">
                     Capstone Project
                   </Link>
                 </li>
@@ -413,29 +287,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Community */}
             <div>
-              <h3 className="font-semibold text-white mb-4">Community</h3>
-              <ul className="space-y-3 text-sm">
+              <h3 className="font-semibold mb-4">Community</h3>
+              <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/mentors" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Users className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/mentors" className="text-gray-300 hover:text-white transition-colors">
                     Mentors
                   </Link>
                 </li>
                 <li>
-                  <Link to="/schools" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Building className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/schools" className="text-gray-300 hover:text-white transition-colors">
                     Schools
                   </Link>
                 </li>
                 <li>
-                  <Link to="/join" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <Heart className="h-4 w-4 mr-2 text-blue-400" />
-                    Join Us
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/blog" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                    <FileText className="h-4 w-4 mr-2 text-blue-400" />
+                  <Link to="/blog" className="text-gray-300 hover:text-white transition-colors">
                     Blog
                   </Link>
                 </li>
@@ -443,51 +308,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
           </div>
 
-          {/* Newsletter */}
-          <div className="border-t border-gray-800 mt-12 pt-8">
-            <div className="flex flex-col md:flex-row items-center md:justify-between gap-6">
-              <div className="text-center md:text-left">
-                <h3 className="text-lg font-semibold text-white mb-2">Stay Updated</h3>
-                <p className="text-gray-300 text-sm">Get insights on ethical business education.</p>
-              </div>
-              <form className="flex flex-col sm:flex-row w-full sm:w-auto gap-3 max-w-md">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="form-input bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-                />
-                <button type="submit" className="btn-primary whitespace-nowrap">
-                  Subscribe
-                </button>
-              </form>
-            </div>
-          </div>
-
           {/* Bottom */}
-          <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-400">
-            <div className="text-center md:text-left">
-              © 2025 EthicBizz. All rights reserved.
-            </div>
-            <div className="flex flex-wrap justify-center gap-6">
-              <Link to="/legal" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link to="/legal" className="hover:text-white transition-colors">Terms of Service</Link>
-              <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
-            </div>
+          <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+            <div>© 2025 EthicBizz. All rights reserved.</div>
             <div className="flex space-x-4">
-              <a href="https://www.facebook.com/share/1CtPqqyvem/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
-                <Facebook className="w-5 h-5" />
+              <a href="https://www.facebook.com/share/1CtPqqyvem/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Facebook className="w-4 h-4" />
               </a>
-              <a href="https://twitter.com/ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
-                <Twitter className="w-5 h-5" />
+              <a href="https://twitter.com/ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Twitter className="w-4 h-4" />
               </a>
-              <a href="https://www.instagram.com/ethicbizz?igsh=MWhsaXk0bWI4ZHQzMQ==" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
-                <Instagram className="w-5 h-5" />
+              <a href="https://www.instagram.com/ethicbizz?igsh=MWhsaXk0bWI4ZHQzMQ==" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-400 transition-colors">
+                <Instagram className="w-4 h-4" />
               </a>
-              <a href="https://www.linkedin.com/company/ethicbizz/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
-                <Linkedin className="w-5 h-5" />
+              <a href="https://www.linkedin.com/company/ethicbizz/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Linkedin className="w-4 h-4" />
               </a>
-              <a href="https://youtube.com/@ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-gray-800">
-                <Youtube className="w-5 h-5" />
+              <a href="https://youtube.com/@ethicbizz" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-400 transition-colors">
+                <Youtube className="w-4 h-4" />
               </a>
             </div>
           </div>

@@ -14,18 +14,23 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'esbuild',
+    minify: 'terser',
     target: 'es2015',
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          supabase: ['@supabase/supabase-js'],
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
           icons: ['lucide-react'],
         },
+        assetFileNames: 'assets/[name].[hash][extname]',
+        chunkFileNames: 'assets/[name].[hash].js',
+        entryFileNames: 'assets/[name].[hash].js',
       },
     },
     chunkSizeWarningLimit: 1000,
+    cssCodeSplit: true,
+    reportCompressedSize: false,
   },
 
   preview: {
@@ -37,6 +42,10 @@ export default defineConfig({
   base: '/',
   
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js'],
+    include: ['react', 'react-dom', 'react-router-dom', 'lucide-react'],
+  },
+
+  esbuild: {
+    drop: ['console', 'debugger'],
   },
 })
