@@ -31,6 +31,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
     reportCompressedSize: false,
+    emptyOutDir: true,
   },
 
   preview: {

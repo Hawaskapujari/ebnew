@@ -29,18 +29,6 @@
     <meta name="twitter:description" content="Empowering high school students to build startups, code ethically, and drive meaningful change in their communities." />
     <meta name="twitter:image" content="/og-image.jpg" />
 
-    <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.web3forms.com https://*.supabase.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://api.web3forms.com https://wa.me https://*.supabase.co wss://*.supabase.co; frame-src 'self';">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-
-    <!-- Performance & PWA-friendly -->
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    
     <!-- Enhanced Mobile Optimization -->
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,80 +38,11 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Security & Performance Scripts -->
+    <!-- Simple Console Warning Only -->
     <script>
-      // Enhanced security measures
-      (function() {
-        'use strict';
-        
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', function(e) {
-          e.preventDefault();
-          return false;
-        });
-        
-        // Disable developer tools shortcuts
-        document.addEventListener('keydown', function(e) {
-          // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+Shift+C
-          if (e.key === 'F12' || 
-              (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
-              (e.ctrlKey && e.key === 'u')) {
-            e.preventDefault();
-            return false;
-          }
-        });
-        
-        // Disable text selection on sensitive elements
-        document.addEventListener('selectstart', function(e) {
-          if (e.target.classList.contains('no-select')) {
-            e.preventDefault();
-            return false;
-          }
-        });
-        
-        // Console warning
-        console.clear();
-        console.log('%cSTOP!', 'color: red; font-size: 50px; font-weight: bold;');
-        console.log('%cThis is a browser feature intended for developers. Unauthorized access to this console may violate our terms of service.', 'color: red; font-size: 16px;');
-        
-        // Detect developer tools
-        let devtools = {open: false, orientation: null};
-        const threshold = 160;
-        
-        setInterval(function() {
-          if (window.outerHeight - window.innerHeight > threshold || 
-              window.outerWidth - window.innerWidth > threshold) {
-            if (!devtools.open) {
-              devtools.open = true;
-              console.clear();
-              console.log('%cDeveloper tools detected. Please close them.', 'color: red; font-size: 20px;');
-            }
-          } else {
-            devtools.open = false;
-          }
-        }, 500);
-        
-        // Prevent common inspection methods
-        document.addEventListener('keydown', function(e) {
-          if (e.ctrlKey && (e.key === 'i' || e.key === 'j' || e.key === 'u')) {
-            e.preventDefault();
-          }
-        });
-        
-        // Disable drag and drop
-        document.addEventListener('dragstart', function(e) {
-          e.preventDefault();
-        });
-      })();
-      
-      // Performance monitoring
-      window.addEventListener('load', function() {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/sw.js').catch(function() {
-            // Service worker registration failed
-          });
-        }
-      });
+      console.clear();
+      console.log('%cEthicBizz', 'color: #4f46e5; font-size: 24px; font-weight: bold;');
+      console.log('%cBuilding Ethical Leaders for Tomorrow', 'color: #6b7280; font-size: 14px;');
     </script>
   </body>
 </html>

@@ -16,7 +16,8 @@ import {
   Brain,
   Heart,
   Play,
-  Star
+  Star,
+  Sparkles
 } from 'lucide-react';
 
 const Home: React.FC = () => {
