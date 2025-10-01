@@ -1,20 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import LiveChat from './components/LiveChat';
 
-// Import all pages directly (no lazy loading for simplicity)
+// Import pages directly (no lazy loading to avoid blank pages)
 import Home from './pages/Home';
 import About from './pages/About';
 import Programs from './pages/programs';
-import ProgramYDP from './pages/programs/YDP';
-import ProgramSSP from './pages/programs/SSP';
-import ProgramEPC from './pages/programs/EPC';
-import ProgramERWA from './pages/programs/ERWA';
-import ProgramECP from './pages/programs/ECP';
+import YDP from './pages/programs/YDP';
+import SSP from './pages/programs/SSP';
+import EPC from './pages/programs/EPC';
+import ERWA from './pages/programs/ERWA';
+import ECP from './pages/programs/ECP';
 import Schools from './pages/Schools';
 import Mentors from './pages/Mentors';
-import MentorSpotlight from './pages/MentorSpotlight';
 import Success from './pages/Success';
 import Portfolio from './pages/Portfolio';
 import Blog from './pages/Blog';
@@ -22,8 +20,8 @@ import BlogDetail from './pages/BlogDetail';
 import Join from './pages/Join';
 import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
-import Legal from './pages/Legal';
 import FormSuccess from './pages/FormSuccess';
+import Legal from './pages/Legal';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -34,14 +32,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/programs" element={<Programs />} />
-          <Route path="/programs/ydp" element={<ProgramYDP />} />
-          <Route path="/programs/ssp" element={<ProgramSSP />} />
-          <Route path="/programs/epc" element={<ProgramEPC />} />
-          <Route path="/programs/erwa" element={<ProgramERWA />} />
-          <Route path="/programs/ecp" element={<ProgramECP />} />
+          <Route path="/programs/ydp" element={<YDP />} />
+          <Route path="/programs/ssp" element={<SSP />} />
+          <Route path="/programs/epc" element={<EPC />} />
+          <Route path="/programs/erwa" element={<ERWA />} />
+          <Route path="/programs/ecp" element={<ECP />} />
           <Route path="/schools" element={<Schools />} />
           <Route path="/mentors" element={<Mentors />} />
-          <Route path="/mentors/spotlight" element={<MentorSpotlight />} />
           <Route path="/success" element={<Success />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
@@ -54,7 +51,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
-      <LiveChat />
     </Router>
   );
 }
